@@ -1,0 +1,5 @@
+![](img/task1_1.jpeg)
+![](img/task1_2.jpeg)
+![](img/task1_3.jpeg)
+![](img/task1_4.jpeg)
+![](img/task1_5.jpeg)
