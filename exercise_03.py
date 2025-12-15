@@ -10,7 +10,7 @@ S = np.arange(31, 95)
 f_quad[np.ix_(S, S)] = 1
 
 # Plot the function:
-plt.imshow(f_quad)
+# plt.imshow(f_quad)
 
 
 # demonstrate plotting
@@ -49,14 +49,14 @@ plt.show()
 # --------------------------------------------------------
 
 # plotting original image in left subplot (f_quad is being plotted in line 13-17; thats why its shown twice)
-axs[0].imshow(f_quad, cmap="viridis")
-axs[0].set_title("f_quad")
+# axs[0].imshow(f_quad, cmap="viridis")
+# axs[0].set_title("f_quad")
 
 # plotting magnitude of Fourier transformation in right subplot (using log scale for underline clearer the differences)
-axs[1].imshow(np.log(1 + np.abs(F_Quad_shifted)), cmap="viridis")
-axs[1].set_title("|F_quad| (log scale)")
+# axs[1].imshow(np.log(1 + np.abs(F_Quad_shifted)), cmap="viridis")
+# axs[1].set_title("|F_quad| (log scale)")
 
-plt.show()
+#plt.show()
 # --------------------------------------------------------
 # --------------------------------------------------------
 # Insert solutions for 3b here
