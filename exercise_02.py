@@ -40,16 +40,61 @@ plt.show()
 # --------------------------------------------------------
 # Insert solutions for 2a and 2b here
 def fourier_transform(f: np.ndarray, inv: bool = False) -> np.ndarray:
-    ...
+    #converting f into a array
+    f = np.asarray(f, dtype=np.complex128).ravel()
+    N = f.shape[0]
+    if N == 0:
+        return np.array([])
+    
+    # x runs the all of the indexes of the input signal
+    # u is the column version 
+    x = np.arange(N)
+    u = x.reshape((N, 1))
 
-# use the function to get the fourier transform F of the function f
+    # chooses sign for forward or inverse DTF
+    sign = -1 if not inv else 1
+    # creating matrix of u*x products (= N*N matrix)
+    exponent = sign * 2j * np.pi * (u @ x.reshape(1, -1)) / N
+    # complex exponential matrix
+    W = np.exp(exponent)
+
+    if not inv:
+        # forward DTF: multiplying the N*N matrix by the vector 
+        return W.dot(f)
+    else:
+        # inverse DTF: scaling by 1/N as given in the formula
+        return (1.0 / N) * W.dot(f)
+
+# use the function to compute the DTF and then to get the fourier transform F of the function f
+F = fourier_transform(f, inv=False)
+# rearanging the array so the negative and positive frquencies are in the correct order to be plotted
+F_shifted = np.fft.fftshift(F)
+# F was normalized, to reflect the actual amplitudes of the original cosines. The frequencies remained the same, only the yaxis scale changed.
+# DTF: if we look at a pure cosine the magnitude of each frequency component is proportional to N/2 --> dividing F_shifted by N/2 to rescale the magnitude axis
+F_shifted_norm = F_shifted / (N/2)
+
 
 
 # plot f and F
-fig, axs = plt.subplots(2, constrained_layout=True)
-
+fig, axs = plt.subplots(2, 1, figsize=(10, 6), constrained_layout=True)
 fig.suptitle("Fourier Transform")
+
+# Time-domain plot f
+axs[0].plot(x, f, "r")
+axs[0].set_title("Signal f(x)")
+axs[0].set_xlabel("Time [s]")
+axs[0].set_ylabel("Amplitude")
+axs[0].grid(True)
+
+# Frequency-domain plot F
+axs[1].plot(freq, np.abs(F_shifted_norm), "b")
+axs[1].set_title("Magnitude spectrum |F(f)|")
+axs[1].set_xlabel("Frequency [Hz]")
+axs[1].set_ylabel("|F(f)|")
+axs[1].grid(True)
+
 plt.show()
+
 # --------------------------------------------------------
 
 
