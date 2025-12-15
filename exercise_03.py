@@ -128,7 +128,7 @@ def low_pass_filter(F: np.ndarray, threshold: int) -> np.ndarray:
     # defining distance from the center for each frequency component in pixels
     D = np.sqrt(U**2 + V**2)
     # zero out all the high frequencies outside of the threshold radius --> keeping only low frequencies
-    F_filtered[D > threshold] = 0  
+    F_filtered[D > threshold] = 0
     return F_filtered
 
 def high_pass_filter(F: np.ndarray, threshold: int) -> np.ndarray:
@@ -143,9 +143,9 @@ def high_pass_filter(F: np.ndarray, threshold: int) -> np.ndarray:
     # defining distance from the center for each frequency component in pixels
     D = np.sqrt(U**2 + V**2)
     # zero out all the low frequencies outside of the threshold radius --> keeping only high frequencies
-    F_filtered[D < threshold] = 0  
+    F_filtered[D < threshold] = 0
     return F_filtered
- 
+
 # apply filters to the fourier transformed F_quad of f_quad
 # defining cutoff threshold radius of n pixels --> here: 20 pixels but flexible
 threshold_radius = 20
@@ -153,7 +153,7 @@ threshold_radius = 20
 F_low = low_pass_filter(F_quad_shifted, threshold_radius)
 F_high = high_pass_filter(F_quad_shifted, threshold_radius)
 
-# for both filters: 
+# for both filters:
 # - moving the zero frequency back to top-left corner --> base for inverse FFT
 # - compute inverse 2D Fourier transform
 # - discarding noise caused by numerical errors
@@ -180,3 +180,22 @@ axs[1, 1].imshow(np.log(1 + np.abs(F_high)), cmap="viridis")
 axs[1, 1].set_title("|F_high|")
 plt.show()
 # --------------------------------------------------------
+
+"""
+Comparison of Task 3b (spatial filtering) and Task 3c (frequency filtering):
+
+The original image `f_quad` is basically a square, so it has sharp edges. Because of that, its Fourier transform (see Plot 2) shows strong high-frequency components — especially those cross-shaped lines in the middle.
+
+In Task 3b, we used spatial filters like a Gaussian (for low-pass) and something similar to Laplace (for high-pass). The results (Plot 3) looked pretty natural:
+- The low-pass filter smoothed the image nicely.
+- The high-pass filter brought out the edges clearly without adding noise.
+
+In Task 3c, we applied ideal filters in the frequency domain. These filters are much more “aggressive”:
+- The ideal low-pass filter caused ringing effects (Gibbs effect) around the edges.
+- The ideal high-pass filter made the image sharper, but also added some noise.
+
+To sum it up:
+- Task 3b (spatial filters) gave smoother and more natural results.
+- Task 3c (frequency filters) gave more control, but can create artifacts if not used carefully.
+- It depends on the goal — if you want clean visuals, go for 3b; if you need precise frequency editing, 3c is better.
+"""
